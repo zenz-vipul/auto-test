@@ -6,11 +6,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 
+
+chrome_options=Options()
+chrome_options.add_argument('--headless')
 
 @pytest.fixture(scope="module")
+
 def driver():
-    driver = webdriver.Chrome()
+    driver=webdriver.Chrome(chrome_options)
     url = os.environ.get('URL') or 'https://iome.ai'   
     driver.get(url)
     driver.maximize_window()
