@@ -1,13 +1,24 @@
+import os
+import time
+import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-import time
-import os
 
-def nav_links(driver):
+@pytest.fixture(scope="module")
+def driver():
+    driver = webdriver.Chrome()
+    url = os.environ.get('URL') or 'https://iome.ai'   
+    driver.get(url)
+    driver.maximize_window()
+    yield driver
+    driver.quit()
+
+
+def test_nav_links(driver):
     try:
         navbar = WebDriverWait(driver, 10).until(
             EC.visibility_of_element_located((By.CSS_SELECTOR, '.ant-col.flex.justify-end'))
@@ -27,31 +38,20 @@ def nav_links(driver):
             
             time.sleep(3)
         
-            if link_url.split("?")[0] in driver.current_url:
-                print(f"Navigation Link '{link_name}' is working and redirected successfully.")
-            else:
-                print(f"Navigation Link '{link_name}' did not redirect correctly or is broken.")
+            expected_url = {
+                "Digital You": "https://iome.ai/#the-digital-you",
+                "Developer": "https://dev.iome.ai/",
+                "Community": "https://iomeai.slack.com/join/shared_invite/zt-20s1w9jxg-unzBomKqMBrrq~DlYNpQHQ#/shared-invite/email",
+                "Go to app": "https://iome.ai/login/"
+            }
+            
+            assert driver.current_url == expected_url[link_name], f"Navigation Link '{link_name}' did not redirect correctly or is broken."
             
             driver.back()
             time.sleep(2)
 
     except TimeoutException:
-        print("Timeout: Navbar could not be located.")
+        pytest.fail("Timeout: Navbar could not be located.")
     except Exception as e:
-        print(f"Error locating links: {e}")
+        pytest.fail(f"Error locating links: {e}") 
 
-def main():
-    driver = webdriver.Chrome()
-    url = os.environ.get('URL')
-    driver.get(url)
-    driver.maximize_window()
-
-    try:
-        nav_links(driver)
-
-    finally:
-        print("All test cases completed.")
-        driver.quit()
-
-if __name__ == "__main__":
-    main()
