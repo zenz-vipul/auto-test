@@ -1,0 +1,22 @@
+name: Sarva Web
+
+on:
+  schedule:
+    - cron: '50 15 * * *'  # Run every day at midnight
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-chromedriver
+          pip install selenium pytest
+
+      - name: Run tests
+        run: |
+          python sarva-web.py
