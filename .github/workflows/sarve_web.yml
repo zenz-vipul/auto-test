@@ -2,7 +2,7 @@ name: Sarva Web
 
 on:
   schedule:
-    - cron: '50 15 * * *'  # Run every day at midnight
+    - cron: '12 16 * * *'  # Run every day at midnight
 
 jobs:
   test:
