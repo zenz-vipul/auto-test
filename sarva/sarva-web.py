@@ -1,20 +1,22 @@
-import pytest
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
+import pytest
 
+chrome_options = Options()
+chrome_options.add_argument('--headless')
 
-# Setup WebDriver with pytest fixture
-@pytest.fixture(scope="module")
+@pytest.fixture
 def driver():
-    driver = webdriver.Chrome()
-    driver.get("http://sarva.ai")
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.get('https://sarva.ai')
     driver.maximize_window()
     yield driver
     driver.quit()
-
 
 def test_nav_link(driver):
     h1DataCheckTitle = driver.find_element(By.TAG_NAME, 'h1')
@@ -32,7 +34,6 @@ def test_nav_link(driver):
     driver.find_element(By.LINK_TEXT, 'Careers').click()
     time.sleep(2)
     print("Navigated to 'Careers'.")
-
 
 def test_footer_links(driver):
     try:
@@ -62,7 +63,6 @@ def test_footer_links(driver):
     except Exception as e:
         pytest.fail(f"Error locating footer links: {e}")
 
-
 def test_product_links(driver):
     try:
         product_cards = WebDriverWait(driver, 10).until(
@@ -81,7 +81,6 @@ def test_product_links(driver):
     except Exception as e:
         pytest.fail(f"Error testing product links: {e}")
 
-
 def products_link(driver, link_name, url):
     try:
         driver.get(url)
@@ -99,4 +98,3 @@ def products_link(driver, link_name, url):
     finally:
         driver.back()
         time.sleep(2)
-
