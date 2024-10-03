@@ -1,0 +1,39 @@
+name: Run Selenium Tests
+
+on: [push, pull_request]
+x`x 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install selenium
+        pip install pytest
+        pip install pytest-html
+
+    - name: Run Tests
+      run: pytest --html=report.html
+
+Docker for Containerized Testing
+For consistent test environments, consider running your tests in Docker containers. This eliminates environment issues between different machines.
+
+FROM python:3.9-slim
+
+# Install necessary dependencies
+RUN pip install selenium pytest pytest-html
+
+# Copy your test scripts
+COPY ./tests /tests
+
+# Run tests
+CMD ["pytest", "--html=reports/report.html"]
