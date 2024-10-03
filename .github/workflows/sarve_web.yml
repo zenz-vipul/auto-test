@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      # Service for running a Selenium Chrome instance using the Selenium Standalone Chrome container
       selenium:
         image: selenium/standalone-chrome:latest
         ports:
@@ -25,26 +24,21 @@ jobs:
           --health-retries 5
 
     steps:
-    # Step 1: Checkout the repository code
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # Step 2: Set up Python environment
     - name: Set up Python 3.x
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
-    # Step 3: Install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest pytest-selenium
+        pip install -r requirements.txt  # <-- Install dependencies from requirements.txt
 
-    # Step 4: Run Selenium WebDriver Tests
     - name: Run Selenium Tests with pytest
       env:
         DISPLAY: ":99"
       run: |
-        pytest sarva/sarva-web.py
+        pytest sarva/sarva_web.py
