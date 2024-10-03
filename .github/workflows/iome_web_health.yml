@@ -1,9 +1,10 @@
-name: IOMe Web Test
+name: IOMe Test
 
 on:
   schedule:
-    - cron: '03 14 * * *'
-
+    - cron: '49 2 * * *'
+  workflow_dispatch:  # Add this line to enable manual triggering
+  
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,12 +19,12 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb
           sudo apt-get install -f
-      - name: install chrome driver
+      - name: Install Chrome Driver
         run: wget https://chromedriver.storage.googleapis.com/114.0.5735.16/chromedriver_linux64.zip
-      - name: unzip
+      - name: Unzip
         run: |
           unzip chromedriver_linux64.zip
-      - name: chmod
+      - name: Change permissions
         run: chmod +x chromedriver
       - name: Run tests
         env:
