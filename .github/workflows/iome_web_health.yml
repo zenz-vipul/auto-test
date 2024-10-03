@@ -1,37 +1,38 @@
-name: IOMe Web
+name: IOMe Test
+
+# on:
+#   push:
+#     branches:
+#       - main
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  schedule:
+    - cron: '46 2 * * *'
+  
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Check out the repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.12'  # Change to the desired Python version
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Run Selenium tests
-      run: |
-        # Start the Xvfb virtual framebuffer
-        sudo apt-get install -y xvfb
-        Xvfb :99 -ac &
-        export DISPLAY=:99
-        
-      
-        pytest iome_web.py   
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v2
+      - name: Install dependencies
+        run: |
+          pip install pytest selenium
+      - name: Install Chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          sudo apt-get install -f
+      - name: install chrome driver
+        run: wget https://chromedriver.storage.googleapis.com/114.0.5735.16/chromedriver_linux64.zip
+      - name: unzip
+        run: |
+          unzip chromedriver_linux64.zip
+      - name: chmod
+        run: chmod +x chromedriver
+      - name: Run tests
+        env:
+            URL: ${{ secrets.URL }}
+        run: |
+            pytest iome/iome_web.py
