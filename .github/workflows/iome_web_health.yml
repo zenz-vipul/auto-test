@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: '55 11 * * *' # This runs every day at 11:55 AM UTC (5:55 PM IST)
 
 jobs:
   selenium-tests:
