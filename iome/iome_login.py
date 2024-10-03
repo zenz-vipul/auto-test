@@ -11,7 +11,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-
 class AccountAutomation:
     def __init__(self, driver):
         self.driver = driver
@@ -107,7 +106,6 @@ def main():
     account.login_to_account(specific_username, specific_password)
 
     driver.quit()  # Close the browser after login
-
 
 # Run the login
 if __name__ == "__main__":
