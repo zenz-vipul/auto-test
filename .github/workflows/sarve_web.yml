@@ -28,4 +28,4 @@ jobs:
 
     - name: Run Selenium Tests
       run: |
-        pytest sarva/sarva_web.py
+        pytest sarva/sarva-web.py
