@@ -5,13 +5,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 import time
+import os
 
-driver = webdriver.Chrome()
-url = "https://iome.ai/"
-driver.get(url)
-driver.maximize_window()
-
-# Navbar link tests
 def nav_links(driver):
     try:
         navbar = WebDriverWait(driver, 10).until(
@@ -45,9 +40,18 @@ def nav_links(driver):
     except Exception as e:
         print(f"Error locating links: {e}")
 
-try:
-    nav_links(driver)
+def main():
+    driver = webdriver.Chrome()
+    url = os.environ.get('URL')
+    driver.get(url)
+    driver.maximize_window()
 
-finally:
-    print("All test cases completed.")
-    driver.quit()
+    try:
+        nav_links(driver)
+
+    finally:
+        print("All test cases completed.")
+        driver.quit()
+
+if __name__ == "__main__":
+    main()
