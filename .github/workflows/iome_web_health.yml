@@ -2,7 +2,7 @@ name: IOMe Web Test
 
 on:
   schedule:
-    - cron: '03 14 * * *'
+    - cron: '20 14 * * *'
 
 jobs:
   test:
