@@ -2,7 +2,7 @@ name: Sarva Web
 
 on:
   schedule:
-    - cron: '12 16 * * *'  # Run every day at midnight
+    - cron: '14 16 * * *'  # Run every day at midnight
 
 jobs:
   test:
@@ -19,4 +19,4 @@ jobs:
 
       - name: Run tests
         run: |
-          python sarva-web.py
+          python sarva/sarva-web.py
