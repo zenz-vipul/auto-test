@@ -10,18 +10,7 @@ on:
 
 jobs:
   selenium-tests:
-    runs-on: ubuntu-latest
-
-    services:
-      selenium:
-        image: selenium/standalone-chrome:latest
-        ports:
-          - 4444:4444
-        options: >-
-          --health-cmd "curl -sSL http://localhost:4444/wd/hub/status || exit 1"
-          --health-interval 5s
-          --health-timeout 10s
-          --health-retries 5
+    runs-on: ubuntu-latest 
 
     steps:
     - name: Checkout repository
@@ -35,14 +24,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt  # <-- Install dependencies from requirements.txt
+        pip install -r requirements.txt
 
-    - name: Run Selenium Tests with pytest
-      env:
-        DISPLAY: ":99"
+    - name: Run Selenium Tests
       run: |
-          chrome_options = webdriver.ChromeOptions()
-          chrome_options.add_argument("--no-sandbox")
-          chrome_options.add_argument("--disable-dev-shm-usage")
-          driver = webdriver.Chrome(options=chrome_options)
-          pytest sarva/sarva-web.py
+        pytest sarva/sarva_web.py
